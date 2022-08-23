@@ -6,10 +6,10 @@ import { Image, Menu } from 'semantic-ui-react'
 import MainView from './MainView';
 import { User as mainUser } from '@daml.js/token-demo';
 import { BondToken } from "@daml.js/token-demo";
+import { BondType } from '@daml.js/token-demo/lib/BondToken';
 import { PublicParty } from '../Credentials';
 import { userContext } from './App';
 import DamlLedger from '@daml/react';
-import { BondType } from '@daml.js/token-demo/lib/BondToken';
 
 type Props = {
   onLogout: () => void;
@@ -65,9 +65,12 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
   const createBondTokenMemo = useCallback(async () => {
     try {
       {
-        let bondType : BondType = "Vanilla"
-        const token = {issuer: party, underwriter: party, name: "test", currency: "SGD", bondType: bondType};
-        let bondContract = await ledger.create(BondToken.BondApplication, token);
+        let bondContract = await ledger.fetchByKey(BondToken.BondApplication, party);
+        if (bondContract === null) {
+          let bondType : BondType = "Vanilla"
+          const token = {issuer: party, underwriter: party, name: "test", currency: "SGD", bondType: bondType};
+          bondContract = await ledger.create(BondToken.BondApplication, token);
+        }
       }
       setCreatedUser(true);
     } catch(error) {
@@ -77,6 +80,7 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
 
   useEffect(() => {createUserMemo();} , [createUserMemo])
   useEffect(() => {createAliasMemo();} , [createAliasMemo])
+  useEffect(() => {createBondTokenMemo();} , [createBondTokenMemo])
 
   if (!(createdUser && createdAlias)) {
     return <h1>Logging in...</h1>;

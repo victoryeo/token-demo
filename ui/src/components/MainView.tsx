@@ -7,6 +7,7 @@ import { Party } from '@daml/types';
 import { useLedger, useStreamQueries } from "@daml/react";
 import { User as mainUser } from '@daml.js/token-demo';
 import { BondToken } from "@daml.js/token-demo";
+import { BondApplication } from "@daml.js/token-demo";
 import { publicContext, userContext } from './App';
 import UserList from './UserList';
 import PartyListEdit from './PartyListEdit';
@@ -15,21 +16,13 @@ import MessageList from './MessageList';
 
 // USERS_BEGIN
 const MainView: React.FC = () => {
-  const mainUserFats = useStreamQueries(mainUser);
-  console.log(mainUserFats.contracts)
-  const fixedRateBondFacts = useStreamQueries(BondToken);
-  console.log(fixedRateBondFacts.contracts)
+  //const mainUserFats = useStreamQueries(mainUser);
+  //console.log(mainUserFats.contracts)
+  //const fixedRateBondFacts = useStreamQueries(BondApplication);
+  //console.log(fixedRateBondFacts.contracts)
 
   const price = "Price"
   const quantity = "Quantity"
-
-  const doIssue =  async (contract: any, params: any) => {
-    const payload = {
-      price: params[price],
-      quantity: params[quantity],
-    }
-    await ledger.exerciseByKey(BondToken.BondApplication.IssueBond, contract.contractId, payload);
-  };
 
   const username = userContext.useParty();
   const myUserResult = userContext.useStreamFetchByKeys(mainUser.User, () => [username], [username]);
@@ -67,13 +60,26 @@ const MainView: React.FC = () => {
   }
   // FOLLOW_END
 
+  const doIssue =  async ( params: any, contract: any = null) => {
+    const payload = {
+      price: params[price],
+      quantity: params[quantity],
+    }
+    console.log(payload)
+    try {
+      await ledger.exerciseByKey(BondToken.BondApplication.IssueBond, username, payload);
+    } catch(error) {
+      alert(`Unknown error:\n${JSON.stringify(error)}`);
+    }
+  };
+
   const handleIssue = async () => {
     console.log('handleIssue')
     const params = {
-      price: 100.0,
-      quantity: 10
+      "Price": 100.0,
+      "Quantity": 10
     }
-    fixedRateBondFacts.contracts.map(c => {doIssue(c.contractId, params)})
+    await doIssue(params)
   }
 
   return (
