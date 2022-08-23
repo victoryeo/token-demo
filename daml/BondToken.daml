@@ -1,0 +1,75 @@
+module BondToken where
+
+data BondType = Vanilla | Put | Call
+  deriving(Eq, Show)
+
+template BondToken
+  with
+    issuer: Party
+    underwriter: Party
+    name: Text
+    currency: Text
+    price: Decimal
+    quantity: Int
+  where
+    signatory underwriter, issuer
+
+    ensure underwriter /= issuer
+
+template BondApplication
+  with
+    issuer: Party
+    underwriter: Party
+    name: Text
+    currency: Text
+    bondType: BondType
+  where
+    signatory issuer
+
+    choice IssueBond: ContractId BondToken
+      with
+        price: Decimal
+        quantity: Int
+      controller underwriter 
+        do
+          create BondToken with
+            name
+            issuer
+            underwriter
+            price
+            quantity
+            currency = "SGD"
+              
+    choice Decline: ContractId DeclinedApplication
+      with
+        reason: Text
+        suggestedType: BondType
+      controller underwriter
+        do
+          create DeclinedApplication with ..
+
+template DeclinedApplication
+  with
+    issuer: Party
+    underwriter: Party
+    suggestedType: BondType
+    bondType: BondType
+    name: Text
+    currency: Text
+    reason: Text
+  where
+    signatory issuer, underwriter
+
+    choice RequestNewIssue: ContractId BondApplication
+      controller issuer 
+        do
+          create BondApplication
+            with
+              issuer
+              underwriter
+              name
+              currency
+              bondType = suggestedType
+
+    
+    
