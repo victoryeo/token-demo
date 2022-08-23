@@ -4,7 +4,7 @@
 import React, { useMemo } from 'react';
 import { Container, Grid, Header, Icon, Segment, Divider, Button } from 'semantic-ui-react';
 import { Party } from '@daml/types';
-import { User } from '@daml.js/token-demo';
+import { User as mainUser } from '@daml.js/token-demo';
 import { publicContext, userContext } from './App';
 import UserList from './UserList';
 import PartyListEdit from './PartyListEdit';
@@ -14,10 +14,10 @@ import MessageList from './MessageList';
 // USERS_BEGIN
 const MainView: React.FC = () => {
   const username = userContext.useParty();
-  const myUserResult = userContext.useStreamFetchByKeys(User.User, () => [username], [username]);
-  const aliases = publicContext.useStreamQueries(User.Alias, () => [], []);
+  const myUserResult = userContext.useStreamFetchByKeys(mainUser.User, () => [username], [username]);
+  const aliases = publicContext.useStreamQueries(mainUser.Alias, () => [], []);
   const myUser = myUserResult.contracts[0]?.payload;
-  const allUsers = userContext.useStreamQueries(User.User).contracts;
+  const allUsers = userContext.useStreamQueries(mainUser.User).contracts;
 // USERS_END
 
   // Sorted list of users that are following the current user
@@ -40,7 +40,7 @@ const MainView: React.FC = () => {
 
   const follow = async (userToFollow: Party): Promise<boolean> => {
     try {
-      await ledger.exerciseByKey(User.User.Follow, username, {userToFollow});
+      await ledger.exerciseByKey(mainUser.User.Follow, username, {userToFollow});
       return true;
     } catch (error) {
       alert(`Unknown error:\n${JSON.stringify(error)}`);
@@ -52,7 +52,7 @@ const MainView: React.FC = () => {
   const handleIssue = () => {
 
   }
-  
+
   return (
     <Container>
       <Grid centered columns={2}>

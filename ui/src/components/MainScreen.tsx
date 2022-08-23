@@ -4,7 +4,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Image, Menu } from 'semantic-ui-react'
 import MainView from './MainView';
-import { User as myUser } from '@daml.js/token-demo';
+import { User as mainUser } from '@daml.js/token-demo';
 import { PublicParty } from '../Credentials';
 import { userContext } from './App';
 
@@ -34,10 +34,10 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
 
   const createUserMemo = useCallback(async () => {
     try {
-      let userContract = await ledger.fetchByKey(myUser.User, party);
+      let userContract = await ledger.fetchByKey(mainUser.User, party);
       if (userContract === null) {
         const user = {username: party, following: []};
-        userContract = await ledger.create(myUser.User, user);
+        userContract = await ledger.create(mainUser.User, user);
       }
       setCreatedUser(true);
     } catch(error) {
@@ -48,9 +48,9 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
   const createAliasMemo = useCallback(async () => {
     if (publicParty) {
       try {
-        let userAlias = await ledger.fetchByKey(myUser.Alias, {_1: party, _2: publicParty});
+        let userAlias = await ledger.fetchByKey(mainUser.Alias, {_1: party, _2: publicParty});
         if (userAlias === null) {
-           await ledger.create(myUser.Alias, {username: party, alias: toAlias(user.userId), public: publicParty});
+           await ledger.create(mainUser.Alias, {username: party, alias: toAlias(user.userId), public: publicParty});
         }
       } catch(error) {
         alert(`Unknown error:\n${JSON.stringify(error)}`);
