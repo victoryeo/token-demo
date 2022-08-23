@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useMemo } from 'react';
-import { Container, Grid, Header, Icon, Segment, Divider } from 'semantic-ui-react';
+import { Container, Grid, Header, Icon, Segment, Divider, Button } from 'semantic-ui-react';
 import { Party } from '@daml/types';
 import { User } from '@daml.js/token-demo';
 import { publicContext, userContext } from './App';
@@ -49,6 +49,10 @@ const MainView: React.FC = () => {
   }
   // FOLLOW_END
 
+  const handleIssue = () => {
+
+  }
+  
   return (
     <Container>
       <Grid centered columns={2}>
@@ -57,6 +61,33 @@ const MainView: React.FC = () => {
             <Header as='h1' size='huge' color='blue' textAlign='center' style={{padding: '1ex 0em 0ex 0em'}}>
                 {myUserName ? `Welcome, ${myUserName}!` : 'Loading...'}
             </Header>
+
+            <Segment>
+              <Header as='h2'>
+                <Header.Content>
+                  Bonds
+                  <Header.Subheader><Button onClick={handleIssue}>Issue</Button> </Header.Subheader>
+                </Header.Content>
+              </Header>
+              <Divider />
+              <Header as='h2'>
+                <Header.Content>
+                  <Header.Subheader>Applications </Header.Subheader>
+                </Header.Content>
+              </Header>
+              <Divider />
+              <Header as='h2'>
+                <Header.Content>
+                  <Header.Subheader>Declined Applications </Header.Subheader>
+                </Header.Content>
+              </Header>
+              <Divider />
+              <Header as='h2'>
+                <Header.Content>
+                  <Header.Subheader>Approved Applications </Header.Subheader>
+                </Header.Content>
+              </Header>
+            </Segment>
 
             <Segment>
               <Header as='h2'>
