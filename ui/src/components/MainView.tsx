@@ -6,12 +6,12 @@ import { Container, Grid, Header, Icon, Segment, Divider, Button } from 'semanti
 import { Party } from '@daml/types';
 import { useLedger, useStreamQueries } from "@daml/react";
 import { User as mainUser } from '@daml.js/token-demo';
+import { BondToken } from "@daml.js/token-demo";
 import { publicContext, userContext } from './App';
 import UserList from './UserList';
 import PartyListEdit from './PartyListEdit';
 import MessageEdit from './MessageEdit';
 import MessageList from './MessageList';
-import { BondToken } from "@daml.js/token-demo/lib/BondToken";
 
 // USERS_BEGIN
 const MainView: React.FC = () => {

@@ -5,9 +5,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Image, Menu } from 'semantic-ui-react'
 import MainView from './MainView';
 import { User as mainUser } from '@daml.js/token-demo';
+import { BondToken } from "@daml.js/token-demo";
 import { PublicParty } from '../Credentials';
 import { userContext } from './App';
 import DamlLedger from '@daml/react';
+import { BondType } from '@daml.js/token-demo/lib/BondToken';
 
 type Props = {
   onLogout: () => void;
@@ -59,6 +61,19 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
       setCreatedAlias(true);
     }
   }, [ledger, user, publicParty, party]);
+
+  const createBondTokenMemo = useCallback(async () => {
+    try {
+      {
+        let bondType : BondType = "Vanilla"
+        const token = {issuer: party, underwriter: party, name: "test", currency: "SGD", bondType: bondType};
+        let bondContract = await ledger.create(BondToken.BondApplication, token);
+      }
+      setCreatedUser(true);
+    } catch(error) {
+      alert(`Unknown error:\n${JSON.stringify(error)}`);
+    }
+  }, [ledger, party]);
 
   useEffect(() => {createUserMemo();} , [createUserMemo])
   useEffect(() => {createAliasMemo();} , [createAliasMemo])
