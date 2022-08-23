@@ -7,6 +7,7 @@ import MainView from './MainView';
 import { User as mainUser } from '@daml.js/token-demo';
 import { PublicParty } from '../Credentials';
 import { userContext } from './App';
+import DamlLedger from '@daml/react';
 
 type Props = {
   onLogout: () => void;
@@ -66,7 +67,7 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
     return <h1>Logging in...</h1>;
   } else {
     return (
-      <>
+      <DamlLedger party={user.primaryParty??"empty"} token={user.userId} >
         <Menu icon borderless>
           <Menu.Item>
             <Image
@@ -92,7 +93,7 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
           </Menu.Menu>
         </Menu>
         <MainView />
-      </>
+      </DamlLedger>
     );
   }
 };

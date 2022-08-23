@@ -4,15 +4,33 @@
 import React, { useMemo } from 'react';
 import { Container, Grid, Header, Icon, Segment, Divider, Button } from 'semantic-ui-react';
 import { Party } from '@daml/types';
+import { useLedger, useStreamQueries } from "@daml/react";
 import { User as mainUser } from '@daml.js/token-demo';
 import { publicContext, userContext } from './App';
 import UserList from './UserList';
 import PartyListEdit from './PartyListEdit';
 import MessageEdit from './MessageEdit';
 import MessageList from './MessageList';
+import { BondToken } from "@daml.js/token-demo/lib/BondToken";
 
 // USERS_BEGIN
 const MainView: React.FC = () => {
+  const mainUserFats = useStreamQueries(mainUser);
+  console.log(mainUserFats.contracts)
+  const fixedRateBondFacts = useStreamQueries(BondToken);
+  console.log(fixedRateBondFacts.contracts)
+
+  const price = "Price"
+  const quantity = "Quantity"
+
+  const doIssue =  async (contract: any, params: any) => {
+    const payload = {
+      price: params[price],
+      quantity: params[quantity],
+    }
+    await ledger.exerciseByKey(BondToken.BondApplication.IssueBond, contract.contractId, payload);
+  };
+
   const username = userContext.useParty();
   const myUserResult = userContext.useStreamFetchByKeys(mainUser.User, () => [username], [username]);
   const aliases = publicContext.useStreamQueries(mainUser.Alias, () => [], []);
@@ -49,8 +67,13 @@ const MainView: React.FC = () => {
   }
   // FOLLOW_END
 
-  const handleIssue = () => {
-
+  const handleIssue = async () => {
+    console.log('handleIssue')
+    const params = {
+      price: 100.0,
+      quantity: 10
+    }
+    fixedRateBondFacts.contracts.map(c => {doIssue(c.contractId, params)})
   }
 
   return (
