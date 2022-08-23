@@ -1,5 +1,7 @@
 # token-demo
 
+This is a demo of bond tokenisation using DAML and React.
+
 ## Development Quick Start
 
 You need to have [Node.js] and [Daml] installed.
