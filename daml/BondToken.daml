@@ -26,6 +26,9 @@ template BondApplication
   where
     signatory issuer
 
+    key issuer: Party
+    maintainer key
+
     choice IssueBond: ContractId BondToken
       with
         price: Decimal
