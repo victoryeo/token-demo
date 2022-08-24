@@ -1,8 +1,8 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useMemo } from 'react';
-import { Container, Grid, Header, Icon, Segment, Divider, Button } from 'semantic-ui-react';
+import React, { useMemo, useState } from 'react';
+import { Container, Grid, Header, Icon, Segment, Divider, Button, Input } from 'semantic-ui-react';
 import { Party } from '@daml/types';
 import { useLedger, useStreamQueries } from "@daml/react";
 import { User as mainUser } from '@daml.js/token-demo';
@@ -16,6 +16,10 @@ import MessageList from './MessageList';
 import BondTokenList from './BondTokenList';
 
 const MainView: React.FC = () => {
+  const [bondname, setBondname] = useState("")
+  const [bondprice, setBondprice] = useState("")
+  const [bondqty, setBondqty] = useState("")
+
   //const mainUserFats = useStreamQueries(mainUser);
   //console.log(mainUserFats.contracts)
   //const fixedRateBondFacts = useStreamQueries(BondApplication);
@@ -82,8 +86,8 @@ const MainView: React.FC = () => {
   const handleIssue = async () => {
     console.log('handleIssue')
     const params = {
-      "Price": 100.0,
-      "Quantity": 10
+      "Price": bondprice,
+      "Quantity": bondqty
     }
     await doIssue(params)
   }
@@ -100,7 +104,10 @@ const MainView: React.FC = () => {
             <Segment>
               <Header as='h2'>
                 <Header.Content>
-                  Bonds
+                  Bonds<br></br>
+                  <Input placeholder='name' id="bondname" onChange={(e) => setBondname(e.target.value)}/>
+                  <Input placeholder='price' id="bondprice" onChange={(e) => setBondprice(e.target.value)}/>
+                  <Input placeholder='quantity' id="quantity" onChange={(e) => setBondqty(e.target.value)}/>
                   <Header.Subheader><Button onClick={handleIssue}>Issue</Button> </Header.Subheader>
                 </Header.Content>
               </Header>
