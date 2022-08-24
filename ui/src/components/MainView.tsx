@@ -14,7 +14,6 @@ import PartyListEdit from './PartyListEdit';
 import MessageEdit from './MessageEdit';
 import MessageList from './MessageList';
 
-// USERS_BEGIN
 const MainView: React.FC = () => {
   //const mainUserFats = useStreamQueries(mainUser);
   //console.log(mainUserFats.contracts)
@@ -24,6 +23,7 @@ const MainView: React.FC = () => {
   const price = "Price"
   const quantity = "Quantity"
 
+// USERS_BEGIN
   const username = userContext.useParty();
   const myUserResult = userContext.useStreamFetchByKeys(mainUser.User, () => [username], [username]);
   const aliases = publicContext.useStreamQueries(mainUser.Alias, () => [], []);
@@ -101,7 +101,7 @@ const MainView: React.FC = () => {
               <Divider />
               <Header as='h2'>
                 <Header.Content>
-                  <Header.Subheader>Applications </Header.Subheader>
+                  <Header.Subheader>All Bond Issues </Header.Subheader>
                 </Header.Content>
               </Header>
               <Divider />
