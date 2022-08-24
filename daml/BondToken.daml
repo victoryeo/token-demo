@@ -14,6 +14,9 @@ template BondToken
   where
     signatory underwriter, issuer
 
+    key issuer: Party
+    maintainer key
+
     -- comment out
     --ensure underwriter /= issuer
 
