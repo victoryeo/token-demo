@@ -13,6 +13,7 @@ import UserList from './UserList';
 import PartyListEdit from './PartyListEdit';
 import MessageEdit from './MessageEdit';
 import MessageList from './MessageList';
+import BondTokenList from './BondTokenList';
 
 const MainView: React.FC = () => {
   //const mainUserFats = useStreamQueries(mainUser);
@@ -30,6 +31,11 @@ const MainView: React.FC = () => {
   const myUser = myUserResult.contracts[0]?.payload;
   const allUsers = userContext.useStreamQueries(mainUser.User).contracts;
 // USERS_END
+
+  const allBondTokens = userContext.useStreamQueries(BondToken.BondToken).contracts;
+  const theBondTokens = useMemo(() => 
+    allBondTokens.map(bonds => bonds.payload),
+    [allBondTokens, username]);
 
   // Sorted list of users that are following the current user
   const followers = useMemo(() =>
@@ -103,6 +109,7 @@ const MainView: React.FC = () => {
                 <Header.Content>
                   <Header.Subheader>All Bond Issues </Header.Subheader>
                 </Header.Content>
+                <BondTokenList bondTokens={theBondTokens} />
               </Header>
               <Divider />
               <Header as='h2'>
