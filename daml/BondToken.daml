@@ -14,7 +14,8 @@ template BondToken
   where
     signatory underwriter, issuer
 
-    ensure underwriter /= issuer
+    -- comment out
+    --ensure underwriter /= issuer
 
 template BondApplication
   with
