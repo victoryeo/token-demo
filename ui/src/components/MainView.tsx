@@ -27,6 +27,7 @@ const MainView: React.FC = () => {
 
   const price = "Price"
   const quantity = "Quantity"
+  const name = "Bondname"
 
 // USERS_BEGIN
   const username = userContext.useParty();
@@ -74,6 +75,7 @@ const MainView: React.FC = () => {
     const payload = {
       price: params[price],
       quantity: params[quantity],
+      bondname: params[name]
     }
     console.log(payload)
     try {
@@ -87,7 +89,8 @@ const MainView: React.FC = () => {
     console.log('handleIssue')
     const params = {
       "Price": bondprice,
-      "Quantity": bondqty
+      "Quantity": bondqty,
+      "Bondname": bondname
     }
     await doIssue(params)
   }

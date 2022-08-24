@@ -7,7 +7,7 @@ template BondToken
   with
     issuer: Party
     underwriter: Party
-    name: Text
+    bondname: Text
     currency: Text
     price: Decimal
     quantity: Int
@@ -34,10 +34,11 @@ template BondApplication
       with
         price: Decimal
         quantity: Int
+        bondname: Text
       controller underwriter 
         do
           create BondToken with
-            name
+            bondname
             issuer
             underwriter
             price
