@@ -14,9 +14,6 @@ template BondToken
   where
     signatory underwriter, issuer
 
-    key issuer: Party
-    maintainer key
-
     -- comment out
     --ensure underwriter /= issuer
 
@@ -33,7 +30,7 @@ template BondApplication
     key issuer: Party
     maintainer key
 
-    choice IssueBond: ContractId BondToken
+    nonconsuming choice IssueBond: ContractId BondToken
       with
         price: Decimal
         quantity: Int
@@ -47,7 +44,7 @@ template BondApplication
             quantity
             currency = "SGD"
               
-    choice Decline: ContractId DeclinedApplication
+    nonconsuming choice Decline: ContractId DeclinedApplication
       with
         reason: Text
         suggestedType: BondType
