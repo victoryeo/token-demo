@@ -18,7 +18,9 @@ const BondTokenList: React.FC<Props> = ({bondTokens}) => {
           <List.Content>
             <List.Content floated='right'>
               <div>Name: {bond.name}</div>
-              <div>Issuer: {bond.issuer}</div> 
+              <div>Issuer: {bond.issuer}</div>
+              <div>Price: {bond.price}</div> 
+              <div>Quantity: {bond.quantity}</div>
             </List.Content>
           </List.Content>
         </List.Item>
