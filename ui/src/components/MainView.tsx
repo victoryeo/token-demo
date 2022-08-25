@@ -73,9 +73,9 @@ const MainView: React.FC = () => {
 
   const doIssue =  async ( params: any, contract: any = null) => {
     const payload = {
-      price: params[price],
-      quantity: params[quantity],
-      bondname: params[name]
+      price: params.Price,
+      quantity: params.Quantity,
+      bondname: params.Bondname
     }
     console.log(payload)
     try {
@@ -88,9 +88,9 @@ const MainView: React.FC = () => {
   const handleIssue = async () => {
     console.log('handleIssue')
     const params = {
-      "Price": bondprice,
-      "Quantity": bondqty,
-      "Bondname": bondname
+      Price: bondprice,
+      Quantity: bondqty,
+      Bondname: bondname
     }
     await doIssue(params)
   }
