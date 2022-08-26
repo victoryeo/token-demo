@@ -8,6 +8,7 @@ import { useLedger, useStreamQueries } from "@daml/react";
 import { User as mainUser } from '@daml.js/token-demo';
 import { BondToken } from "@daml.js/token-demo";
 import { BondApplication } from "@daml.js/token-demo";
+import { BondType } from '@daml.js/token-demo/lib/BondToken';
 import { publicContext, userContext } from './App';
 import UserList from './UserList';
 import PartyListEdit from './PartyListEdit';
@@ -19,6 +20,7 @@ const MainView: React.FC = () => {
   const [bondname, setBondname] = useState("")
   const [bondprice, setBondprice] = useState("")
   const [bondqty, setBondqty] = useState("")
+  const party = userContext.useParty();
 
   //const mainUserFats = useStreamQueries(mainUser);
   //console.log(mainUserFats.contracts)
@@ -79,7 +81,13 @@ const MainView: React.FC = () => {
     }
     console.log(payload)
     try {
-      await ledger.exerciseByKey(BondToken.BondApplication.IssueBond, username, payload);
+      //let bondContract = await ledger.fetchByKey(BondToken.BondApplication, party);
+      //if (bondContract === null) {
+        let bondType : BondType = "Vanilla"
+        const token = {issuer: party, underwriter: party, name: params.Bondname, currency: "SGD", bondType: bondType};
+        let bondContract = await ledger.create(BondToken.BondApplication, token);
+      //}
+      //await ledger.exerciseByKey(BondToken.BondApplication.IssueBond, username, payload);
     } catch(error) {
       alert(`Unknown error:\n${JSON.stringify(error)}`);
     }

@@ -62,7 +62,7 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
     }
   }, [ledger, user, publicParty, party]);
 
-  const createBondTokenMemo = useCallback(async () => {
+  /*const createBondTokenMemo = useCallback(async () => {
     try {
       {
         let bondContract = await ledger.fetchByKey(BondToken.BondApplication, party);
@@ -72,15 +72,14 @@ const MainScreen: React.FC<Props> = ({onLogout, getPublicParty}) => {
           bondContract = await ledger.create(BondToken.BondApplication, token);
         }
       }
-      setCreatedUser(true);
     } catch(error) {
       alert(`Unknown error:\n${JSON.stringify(error)}`);
     }
-  }, [ledger, party]);
+  }, [ledger, party]);*/
 
   useEffect(() => {createUserMemo();} , [createUserMemo])
   useEffect(() => {createAliasMemo();} , [createAliasMemo])
-  useEffect(() => {createBondTokenMemo();} , [createBondTokenMemo])
+  //useEffect(() => {createBondTokenMemo();} , [createBondTokenMemo])
 
   if (!(createdUser && createdAlias)) {
     return <h1>Logging in...</h1>;
