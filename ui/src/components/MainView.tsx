@@ -15,6 +15,7 @@ import PartyListEdit from './PartyListEdit';
 import MessageEdit from './MessageEdit';
 import MessageList from './MessageList';
 import BondTokenList from './BondTokenList';
+import BondApplicationList from "./BondApplicationList";
 
 const MainView: React.FC = () => {
   const [bondname, setBondname] = useState("")
@@ -43,6 +44,14 @@ const MainView: React.FC = () => {
   const theBondTokens = useMemo(() => 
     allBondTokens.map(bonds => bonds.payload),
     [allBondTokens, username]);
+
+  const allBondApplications = userContext.useStreamQueries(
+    BondToken.BondApplication
+  ).contracts;
+  const theBondApplications = useMemo(
+    () => allBondApplications.map((bonds) => bonds.payload),
+    [allBondApplications, username]
+  );
 
   // Sorted list of users that are following the current user
   const followers = useMemo(() =>
@@ -125,7 +134,14 @@ const MainView: React.FC = () => {
               <Divider />
               <Header as='h2'>
                 <Header.Content>
-                  <Header.Subheader>All Bond Issues </Header.Subheader>
+                  <Header.Subheader>All Bond Applications </Header.Subheader>
+                </Header.Content>
+                <BondApplicationList bondApplications={theBondApplications} />
+              </Header>
+              <Divider />
+              <Header as='h2'>
+                <Header.Content>
+                  <Header.Subheader>Successful Applications </Header.Subheader>
                 </Header.Content>
                 <BondTokenList bondTokens={theBondTokens} />
               </Header>
@@ -133,12 +149,6 @@ const MainView: React.FC = () => {
               <Header as='h2'>
                 <Header.Content>
                   <Header.Subheader>Declined Applications </Header.Subheader>
-                </Header.Content>
-              </Header>
-              <Divider />
-              <Header as='h2'>
-                <Header.Content>
-                  <Header.Subheader>Approved Applications </Header.Subheader>
                 </Header.Content>
               </Header>
             </Segment>
