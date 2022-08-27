@@ -3,7 +3,7 @@
 This is a demo of bond tokenisation using DAML and React.
 
 ## Introduction
-To request bond issue, login as Bob or Alice
+To request bond issue, login as Bob or Alice. 
 To approve bond issue, login as bank. Bank functions as underwriter of the bond. 
 
 ## Development Quick Start
