@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Container, Grid, Header, Icon, Segment, Divider, Button, Input } from 'semantic-ui-react';
 import { Party } from '@daml/types';
 import { useLedger, useStreamQueries } from "@daml/react";
@@ -16,11 +16,21 @@ import MessageEdit from './MessageEdit';
 import MessageList from './MessageList';
 import BondTokenList from './BondTokenList';
 import BondApplicationList from "./BondApplicationList";
+import { withUserManagement } from "../config";
+import { encode } from 'jwt-simple';
+import Ledger, { CanReadAs } from '@daml/ledger';
+
+interface UnderwriterType {
+  username: Party;
+  alias: string;
+};
 
 const MainView: React.FC = () => {
   const [bondname, setBondname] = useState("")
   const [bondprice, setBondprice] = useState("")
   const [bondqty, setBondqty] = useState("")
+  const [theunderwriterObj, setTheUnderwriterObj] = useState<UnderwriterType|undefined>(undefined);
+
   const party = userContext.useParty();
 
   //const mainUserFats = useStreamQueries(mainUser);
@@ -60,6 +70,23 @@ const MainView: React.FC = () => {
     .filter(user => user.username !== username)
     .sort((x, y) => x.username.localeCompare(y.username)),
     [allUsers, username]);
+
+  // get underwriter username from underwriter alias
+  const ledgerId: string = process.env.REACT_APP_LEDGER_ID ?? "token-demo-sandbox"
+  const theunderwriterAlias = "ocbc"
+  const getUnderwriter = async(): Promise<string> => {
+    const payload1 = withUserManagement.tokenPayload(theunderwriterAlias, ledgerId);
+    const token1 = encode(payload1, "secret", "HS256");
+    const ledgerLogin1 = new Ledger({ token: token1 });
+    const underwriter: string = await withUserManagement.primaryParty(theunderwriterAlias, ledgerLogin1);
+    console.log(underwriter)
+
+    setTheUnderwriterObj({username:underwriter,alias:theunderwriterAlias})
+    return underwriter
+  }
+  useEffect(() => {
+    getUnderwriter()
+  }, [])
 
   // Map to translate party identifiers to aliases.
   const partyToAlias = useMemo(() =>
