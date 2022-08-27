@@ -73,7 +73,7 @@ const MainView: React.FC = () => {
 
   // get underwriter username from underwriter alias
   const ledgerId: string = process.env.REACT_APP_LEDGER_ID ?? "token-demo-sandbox"
-  const theunderwriterAlias = "ocbc"
+  const theunderwriterAlias = "bank"
   const getUnderwriter = async(): Promise<string> => {
     const payload1 = withUserManagement.tokenPayload(theunderwriterAlias, ledgerId);
     const token1 = encode(payload1, "secret", "HS256");

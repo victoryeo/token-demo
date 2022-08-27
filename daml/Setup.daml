@@ -14,7 +14,7 @@ data TestUser = TestUser with
 setup : Script ()
 setup = do
   public <- createPublic
-  let aliases = ["Alice", "Bob", "Charlie"]
+  let aliases = ["Alice", "Bob", "Charlie", "Bank"]
   forA_ aliases $ \alias -> createTestUser $ TestUser alias public
 
 -- | Create a test user.
